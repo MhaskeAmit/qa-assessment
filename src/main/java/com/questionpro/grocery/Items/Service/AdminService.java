@@ -14,4 +14,8 @@ public class AdminService {
     public Grocery saveGrocery(Grocery grocery){
         return adminRepository.save(grocery);
     }
+
+    public void delete(Grocery removedItem) {
+        adminRepository.delete(removedItem);
+    }
 }

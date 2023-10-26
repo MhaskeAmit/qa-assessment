@@ -18,23 +18,15 @@ public class Grocery implements Serializable {
     @Column(name = "price")
     private double price;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
-    private List<User> user = new ArrayList<>();
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JoinColumn(name = "user_id", nullable = true,referencedColumnName = "user_id")
+    private User user;
     public Grocery() {
     }
 
     public Grocery(String name, double price) {
         this.name = name;
         this.price = price;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -53,21 +45,19 @@ public class Grocery implements Serializable {
         this.price = price;
     }
 
-    public List<User> getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(List<User> user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
     @Override
     public String toString() {
         return "Grocery{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                " name='" + name + '\'' +
                 ", price=" + price +
-                ", user=" + user +
                 '}';
     }
 }

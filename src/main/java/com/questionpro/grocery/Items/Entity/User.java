@@ -15,8 +15,9 @@ import java.util.Set;
 @Table(name = "User_info")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private int user_id;
     @Column(name = "name")
     private String name;
     @Column(name = "emailId")
@@ -24,25 +25,25 @@ public class User implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "grocery_id", cascade=CascadeType.ALL)
-    private Grocery grocery;
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    private List<Grocery> grocery;
 
     public User() {
     }
 
-    public User(String name, String emailId, String address, Grocery groceries) {
+    public User(String name, String emailId, String address, List<Grocery> groceries) {
         this.name = name;
         this.emailId = emailId;
         this.address = address;
-        this.grocery = groceries;
+
     }
 
     public int getId() {
-        return id;
+        return user_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.user_id = id;
     }
 
     public String getName() {
@@ -69,18 +70,27 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public Grocery getGroceries() {
+    public List<Grocery> getGroceries() {
         return grocery;
     }
 
-    public void setGroceries(Grocery groceries) {
+    public void setGroceries(List<Grocery> groceries) {
         this.grocery = groceries;
+    }
+
+    public void add(Grocery tempGrocery){
+
+        if(grocery == null){
+            grocery = new ArrayList<>();
+        }
+        grocery.add(tempGrocery);
+        tempGrocery.setUser(this);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + user_id +
                 ", name='" + name + '\'' +
                 ", emailId='" + emailId + '\'' +
                 ", address='" + address + '\'' +

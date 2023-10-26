@@ -19,6 +19,13 @@ public class UserService {
 
     public User saveUser(User user){
 
+        for(Grocery g : user.getGroceries()){
+            Grocery grocery = new Grocery();
+            grocery.setUser(user);
+            grocery.setName(g.getName());
+            grocery.setPrice(g.getPrice());
+            System.out.println("User ::"+grocery.getUser());
+        }
         return userRepository.save(user);
     }
 }
